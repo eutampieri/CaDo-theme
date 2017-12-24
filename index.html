@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CaDo Theming</title>
+    <link rel="stylesheet" href="jsColor.css">
+    <script src="jsColorPicker.min.js"></script>
+    <script src="jsColor.js">
+    </script>
+    <script>
+        var keys=["pri","sec-a","sec-b"]
+        function show(palette = null){
+            document.getElementById("palette").classList.remove("nascosto");
+            if(palette!=null){
+                for(var i=0;i<3;i++){
+                    for(var j=0;j<5;j++){
+                        document.getElementById(keys[i]+"-"+j.toString()).value=palette[i*5+j];
+                    }
+                }
+            }
+            jsColorPicker("input.colour",{})
+        }
+        function load(files){
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            show(JSON.parse(e.target.result));
+        };
+        reader.readAsText(files[0]);
+        }
+        function palette(){
+            var p=[]
+            for(var i=0;i<3;i++){
+                for(var j=0;j<5;j++){
+                    p.push(document.getElementById(keys[i]+"-"+j.toString()).value);
+                }
+            }
+            document.getElementById("out").innerHTML=JSON.stringify(p);
+        }
+    </script>
+</head>
+<body>
+    <h1>CaDo Theming</h1>
+    <div class="main">
+        <div class="begin">
+            <div class="button" onclick="show()">Start from scratch</div>
+            or select a theme to modify
+            <input type="file" onchange="load(this.files)">
+        </div>
+    </div>
+    <div id="palette" class="nascosto">
+        <h2>Primary colours</h2>
+        <input onselect="palette()" class="colour" id="pri-0">
+        <input onselect="palette()" class="colour" id="pri-1">
+        <input onselect="palette()" class="colour" id="pri-2">
+        <input onselect="palette()" class="colour" id="pri-3">
+        <input onselect="palette()" class="colour" id="pri-4">
+        <h2>Secondary colours</h2>
+        <input onselect="palette()" class="colour" id="sec-a-0">
+        <input onselect="palette()" class="colour" id="sec-a-1">
+        <input onselect="palette()" class="colour" id="sec-a-2">
+        <input onselect="palette()" class="colour" id="sec-a-3">
+        <input onselect="palette()" class="colour" id="sec-a-4">
+        <h2>Alternative secondary colours</h2>
+        <input onselect="palette()" class="colour" id="sec-b-0">
+        <input onselect="palette()" class="colour" id="sec-b-1">
+        <input onselect="palette()" class="colour" id="sec-b-2">
+        <input onselect="palette()" class="colour" id="sec-b-3">
+        <input onselect="palette()" class="colour" id="sec-b-4">
+    </div>
+    <pre><code id="out"></code></pre>
+</body>
+</html>
